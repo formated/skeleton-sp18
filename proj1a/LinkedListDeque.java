@@ -126,7 +126,29 @@ public class LinkedListDeque<T> {
         return Data;
     }
 
+    /* Gets the item at the given index recursively, where 0 is the front,
+       1 is the next item, and so forth. If no such item exists, returns null.
+       Must not alter the deque!
+    */
+    public T getRecursive(int index)
+    {
+        if (index <= size && size > 0)
+        {
+          return  getRecursiveHelper(index, SentinelNode.nextNode);
+        }
+        return null;
+    }
 
-
+    public T getRecursiveHelper(int index, SList NextItemPointer)
+    {
+        if (index == 0)
+        {
+            return NextItemPointer.Data;
+        }
+        else
+        {
+            return getRecursiveHelper(index - 1,NextItemPointer.nextNode);
+        }
+    }
 
 }
