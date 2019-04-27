@@ -86,7 +86,7 @@ public class ArrayDeque<T> {
             temp = List[firstIndex];
 
             size--;
-            if ((List.length / (size+1)) > 4 && List.length > 100 )
+            if ((List.length / (size+1)) > 4 && List.length > 8 )
             {
                 resizeListDown();
             }
@@ -105,7 +105,7 @@ public class ArrayDeque<T> {
             lastIndex = (lastIndex + List.length - 1) % List.length;
             temp = List[lastIndex];
             size--;
-            if ((List.length / (size+1)) > 4 && List.length > 100 )
+            if ((List.length / (size+1)) > 4 && List.length > 8 )
             {
                 resizeListDown();
             }
@@ -129,8 +129,8 @@ public class ArrayDeque<T> {
     private void resizeListUp()
     {
         int oldSize  =  size;
-        int startIndex = oldSize * 2 / 4;
-        T[] newList = (T[]) new Object[oldSize*2];
+        int startIndex = List.length * 2 / 4;
+        T[] newList = (T[]) new Object[List.length*2];
 
         for(int i = 0; i < size; i++)
         {
@@ -144,12 +144,12 @@ public class ArrayDeque<T> {
     private void resizeListDown()
     {
         int oldSize  = List.length;
-        int startIndex = (oldSize / 2) / 4;
-        T[] newList = (T[]) new Object[oldSize / 2];
+        int startIndex = (List.length / 2) / 4;
+        T[] newList = (T[]) new Object[List.length / 2];
 
         for(int i = 0; i < size; i++)
         {
-            newList[startIndex+i] = List[(firstIndex + i - 1) % oldSize];
+            newList[startIndex+i] = List[(firstIndex + i + 1) % List.length];
         }
 
         firstIndex = startIndex - 1;
