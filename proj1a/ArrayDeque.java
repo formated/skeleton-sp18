@@ -2,8 +2,8 @@ import java.awt.*;
 
 public class ArrayDeque<T> {
 
-    T[] List;
-    public int size ;
+    private T[] List;
+    private int size ;
     private int firstIndex;
     private int lastIndex;
     public ArrayDeque()
@@ -16,34 +16,34 @@ public class ArrayDeque<T> {
     /* Adds an item of type T to the front of the deque.*/
     public void addFirst(T item)
     {
-        /*add the new item*/
-        List[firstIndex] = item;
-        /*increase the size */
-        size++;
-        if (size >= List.length)
+        if (size >= List.length - 1)
         {
             resizeListUp();
         }
-        else
-        {
-            firstIndex = (firstIndex - 1) % List.length;
-        }
+
+        /*add the new item*/
+        List[firstIndex] = item;
+        /*Modify the Head position*/
+        firstIndex = (firstIndex + List.length - 1) % List.length;
+        /*increase the size */
+        size++;
+
     }
 
     /* Adds an item of type T to the back of the deque.*/
     public void addLast(T item)
     {
-        List[lastIndex] = item;
-        /*increase the size */
-        size++;
-        if (size >= List.length)
+        if (size >= List.length - 1)
         {
             resizeListUp();
         }
-        else
-        {
-            lastIndex = (lastIndex + 1) % List.length;
-        }
+        List[lastIndex] = item;
+
+        /*Modify the tail position*/
+        lastIndex = (lastIndex + 1) % List.length;
+
+        /*increase the size */
+        size++;
     }
 
     /*Returns true if deque is empty, false otherwise.*/
@@ -63,12 +63,13 @@ public class ArrayDeque<T> {
     /*Prints the items in the deque from first to last, separated by a space.*/
     public void printDeque()
     {
-        int index = (firstIndex + 1) % List.length;
-
-        while (index < size)
+        int index = (firstIndex + 1) % List.length ;
+        int counter = 0;
+        while (counter < size)
         {
             System.out.print(List[index] + " ");
             index = (index + 1) % List.length;
+            counter++;
         }
     }
 
@@ -81,10 +82,11 @@ public class ArrayDeque<T> {
 
         if (size > 0)
         {
-            temp = List[(firstIndex - 1) % List.length];
-            firstIndex = (firstIndex - 1) % List.length;
+            firstIndex = (firstIndex + 1) % List.length;
+            temp = List[firstIndex];
+
             size--;
-            if ((List.length / size) > 4 && List.length > 100 )
+            if ((List.length / (size+1)) > 4 && List.length > 100 )
             {
                 resizeListDown();
             }
@@ -100,10 +102,10 @@ public class ArrayDeque<T> {
 
         if (size > 0)
         {
-            temp = List[(lastIndex - 1) % List.length];
-            lastIndex = (lastIndex - 1) % List.length;
+            lastIndex = (lastIndex + List.length - 1) % List.length;
+            temp = List[lastIndex];
             size--;
-            if ((List.length / size) > 4 && List.length > 100 )
+            if ((List.length / (size+1)) > 4 && List.length > 100 )
             {
                 resizeListDown();
             }
@@ -119,20 +121,20 @@ public class ArrayDeque<T> {
     {
         if (size > 0)
         {
-            return List[(firstIndex +  index + 1) % List.length];
+            return List[(firstIndex +  index + 1 ) % List.length];
         }
         return null;
     }
 
     private void resizeListUp()
     {
-        int oldSize  = List.length;
+        int oldSize  =  size;
         int startIndex = oldSize * 2 / 4;
         T[] newList = (T[]) new Object[oldSize*2];
 
         for(int i = 0; i < size; i++)
         {
-            newList[startIndex+i] = List[(firstIndex + i + 1) % oldSize];
+            newList[startIndex+i] = List[(firstIndex + i + 1) % List.length];
         }
         firstIndex = startIndex - 1;
         lastIndex = startIndex + size  ;
@@ -147,7 +149,7 @@ public class ArrayDeque<T> {
 
         for(int i = 0; i < size; i++)
         {
-            newList[startIndex+i] = List[(firstIndex + i + 1) % oldSize];
+            newList[startIndex+i] = List[(firstIndex + i - 1) % oldSize];
         }
 
         firstIndex = startIndex - 1;

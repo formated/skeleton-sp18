@@ -15,7 +15,7 @@ public class LinkedListDeque<T> {
         }
     }
     private SList SentinelNode;
-    int size = 0;
+    private int size = 0;
     public LinkedListDeque()
     {
         SentinelNode = new SList(null,null,null);
@@ -139,7 +139,7 @@ public class LinkedListDeque<T> {
         return null;
     }
 
-    public T getRecursiveHelper(int index, SList NextItemPointer)
+    private T getRecursiveHelper(int index, SList NextItemPointer)
     {
         if (index == 0)
         {
